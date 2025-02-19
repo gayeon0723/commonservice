@@ -1,0 +1,159 @@
+spring:
+  application:
+    name: commonservice
+
+  # http post char setting #######################################################
+  web:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    # file upload #######################################################
+    resources:
+      cache:
+        cachecontrol:
+          no-store: true
+      add-mappings: true # #################전역 에러 설정
+      # 정적 리소스(/static, /public 등) 매핑 비활성화
+  mvc:
+    throw-exception-if-no-handler-found: true # #################전역 에러 설정
+    # 존재하지 않는 URL 요청 시 404 Not Found 예외 발생
+
+
+    # kafka #######################################################
+#    kafka:
+#      bootstrap-servers: localhost:9092 # Kafka 브로커 주소
+#      producer:
+#        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      consumer:
+#        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+
+  # db setting(+dbcp) #######################################################
+  datasource:
+    url: jdbc:mysql://localhost:3306/pjt3?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: ======>> HikariPool <<======
+      minimum-idle: 5
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+
+  # jpa #######################################################
+  #  PhysicalNamingStrategyStandardImpl
+  #  --> 클래스명(ExampleEntity)이 그대로 "테이블명(ExampleEntity)"으로 매핑
+  #  --> 기본적으로 대문자와 소문자가 유지되며, 지정된 테이블 명령이 없다면 클래스명을 사용함
+  #  ImplicitNamingStrategyJpaCompliantImpl
+  #  --> 필드명(exampleField)은 기본적으로 "필드 이름을 그대로" 사용하며, 언더스코어 _로 변경되지 않음.
+  # memberId --> member_id로 하려면 안써주면 됨.
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # JPA를 통해 테이블 자동 생성
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+      properties:
+        hibernate:
+          use_sql_comments: true  # SQL 주석 출력
+          format_sql: true  # 포맷된 SQL 출력
+          generate_statistics: true  # Hibernate 통계 활성화
+          dialect: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true # 데이터소스 초기화를 JPA 테이블 생성 이후로 지연
+    show-sql: true  # SQL 출력 활성화
+  sql:
+    init:
+      mode: always # schema.sql과 data.sql_ 실행 활성화
+
+# schema.sql과 data.sql은 자동인식, 파일이름 변경인 경우 다음과 같이 지정해야함.
+#      spring:
+#        sql:
+#          init:
+#            schema-locations: classpath:your-schema-file1.sql,classpath:your-schema-file2.sql
+#            data-locations: classpath:your-data-file1.sql,classpath:your-data-file2.sql
+
+# Flyway는 resources/db/migration 디렉토리 아래의 파일들을 자동으로 처리하며,
+#  파일 이름은 V1__description.sql, V2__description.sql과 같은 형식
+#        spring:
+#          flyway:
+#            enabled: true
+#            locations: classpath:/db/migration
+#  db/migration/V1__create_product_table.sql
+#  db/migration/V2__insert_initial_data.sql
+
+#jwt:
+#  secret: "MySecretKeyForJwtAuthentication12345!"
+#  # JWT 서명 키 (중요!), 32바이트 이상 --> 주기적으로 변경해주어야함.
+#  expiration: 10000  # --> 10초
+#  # expiration: 86400000  # 1일 (24시간) 동안 토큰 유지, 밀리초 1000 --> 1초
+
+
+# lggging #######################################################
+logging:
+  level:
+    root: INFO
+    com.example.demo: INFO
+    org.springframework.web: INFO
+    org.springframework.security : DEBUG
+    org.thymeleaf: INFO
+    org.springframework.boot.web.servlet: INFO
+    org.hibernate.SQL: DEBUG  # SQL 실행 로그
+    org.hibernate.type.descriptor.sql: DEBUG  # SQL 바인딩 파라미터 로그
+    # 쿼리와 함께 파라미터 값을 출력
+    org.hibernate.stat: INFO  # Hibernate 통계 관련 로그
+    # Hibernate가 제공하는 통계 정보를 출력
+    org.springframework.kafka: ERROR
+    org.apache.kafka: ERROR
+  file:
+    name: logs/app.log
+    path: logs
+  pattern:
+    console: '%logger{36} - %msg%n'
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
+
+
+#logging:
+#  level:
+#    root: INFO
+#    com.example.demo: DEBUG
+#    org.springframework.web: DEBUG
+#    org.thymeleaf: INFO
+#    org.springframework.boot.web.servlet: ERROR
+#    org.hibernate.SQL: DEBUG  # SQL 실행 로그
+#    org.hibernate.type.descriptor.sql: TRACE  # SQL 바인딩 파라미터 로그
+#    # 쿼리와 함께 파라미터 값을 출력
+#    org.hibernate.stat: DEBUG  # Hibernate 통계 관련 로그
+#    # Hibernate가 제공하는 통계 정보를 출력
+
+# monitoring #######################################################
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    jmx:
+      exposure:
+        include: '*'
+# #######################################################
+
+# server.port #######################################################
+server:
+  port: 8888
+  error:
+    whitelabel:
+      enabled: false # #################전역 에러 설정
+      # 기본 Whitelabel Error Page 비활성화
+
+# file upload #######################################################
+#upload:
+#  path: "C:/new_java/demo3 - JPA/src/main/resources/static/upload"
