@@ -1,11 +1,8 @@
 package com.ssginc.commonservice.popupStore.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter // 모든 필드에 대해 Getter 자동 생성
+@Data // @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor 모두 자동 생성
 @NoArgsConstructor // Lombok: 기본 생성자 자동 생성
 @AllArgsConstructor // Lombok: 모든 필드를 포함한 생성자 자동 생성
 @Builder // Lombok: 빌더 패턴 자동 생성

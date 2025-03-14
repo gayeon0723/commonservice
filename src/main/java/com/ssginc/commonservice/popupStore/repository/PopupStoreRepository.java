@@ -48,8 +48,9 @@ public interface PopupStoreRepository extends JpaRepository<PopupStore, Long>{
      */
     @Query("""
         SELECT p FROM PopupStore p
+        WHERE p.storeId = :storeId
         ORDER BY p.storeStart
         LIMIT 1
     """)
-    List<PopupStore> findInfo();
+    List<PopupStore> findInfo(@Param("storeId") Long storeId);
 }

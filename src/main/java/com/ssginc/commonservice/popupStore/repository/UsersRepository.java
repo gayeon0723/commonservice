@@ -2,6 +2,7 @@ package com.ssginc.commonservice.popupStore.repository;
 
 import com.ssginc.commonservice.popupStore.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,4 +14,16 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
     // JpaRepository를 상속받아 기본적인 CRUD 기능을 자동으로 제공
     // JpaRepository<엔티티 타입, 기본 키 타입>
     // 별도의 메서드를 정의하지 않아도 findAll(), findById(), save(), delete() 등의 기능을 사용할 수 있음
+
+    //로그인
+    @Query("""
+        SELECT u FROM Users u
+        WHERE u.userEmail = :userEmail
+    """)
+    Users login(String userEmail);
+
+
+
+    //회원가입
+    //Users createUser(Users users); --> save() 메서드 사용
 }

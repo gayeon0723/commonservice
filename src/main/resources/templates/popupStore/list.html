@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>팝업스토어 목록</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;  /* 오른쪽 끝 정렬 */
+            left: auto;
+            width: 50%; /* 기존 너비의 50% */
+            min-width: 120px; /* 최소 너비 */
+            max-width: 200px; /* 최대 너비 */
+            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+            transform: translateX(100%); /* 줄어든 만큼 다시 오른쪽으로 이동 */
+        }
+    </style>
 </head>
 <body>
 <!-- 네비게이션 바 -->
@@ -12,34 +25,7 @@
     <div class="container">
         <div>
             <a class="navbar-brand" href="#">Navbar scroll</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
         </div>
-<!--        <div class="collapse navbar-collapse me-5" id="navbarScroll">-->
-<!--            <ul class="navbar-nav me-5 my-2 my-lg-0 navbar-nav-scroll" style="&#45;&#45;bs-scroll-height: 100px;">-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link active" aria-current="page" href="#">Home</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Link</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item dropdown">-->
-<!--                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                        Link-->
-<!--                    </a>-->
-<!--                    <ul class="dropdown-menu">-->
-<!--                        <li><a class="dropdown-item" href="#">Action</a></li>-->
-<!--                        <li><a class="dropdown-item" href="#">Another action</a></li>-->
-<!--                        <li><hr class="dropdown-divider"></li>-->
-<!--                        <li><a class="dropdown-item" href="#">Something else here</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
-<!--                <li class="nav-item me-5">-->
-<!--                    <a class="nav-link disabled" aria-disabled="true">Link</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
 
         <!-- 검색창 -->
         <form class="d-flex w-100 ms-5" role="search">
@@ -47,10 +33,27 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
 
-        <!-- 로그인 및 회원가입 버튼 -->
+        <!-- 로그인 여부에 따라 다른 UI 표시 -->
         <div class="col-md-3 text-end">
-            <a href="/popupStore/login" class="btn btn-outline-primary me-2">Login</a>
-            <button type="button" class="btn btn-primary">Sign-up</button>
+            <!-- 로그인 전: 로그인 & 회원가입 버튼 -->
+            <div th:if="${session.userEmail == null}">
+                <a href="/popupStore/login" class="btn btn-outline-primary me-2">Login</a>
+                <a href="/popupStore/create" class="btn btn-primary me-2">Sign-up</a>
+            </div>
+
+            <!-- 로그인 후: 유저 프로필 드롭다운 -->
+            <div th:if="${session.userEmail != null}" class="flex-shrink-0 dropdown">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/popupStore/logout">Sign out</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
@@ -124,8 +127,8 @@
     <div class="row mt-3">
         <!-- Thymeleaf 반복문: list에 있는 데이터들을 순회하며 카드 생성 -->
         <div class="col-md-4" th:each="popupStore : ${list}">
-            <div class="card mt-2" onclick="location.href='/popupStore/detail'" style="cursor: pointer;">
-                <img th:src="${popupStore.storeThumbnail}" class="card-img-top" alt="팝업스토어 이미지">
+            <div class="card mt-2" th:onclick="|location.href='/popupStore/detail/' + ${popupStore.storeId}|" style="cursor: pointer;">
+            <img th:src="${popupStore.storeThumbnail}" class="card-img-top" alt="팝업스토어 이미지">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${popupStore.storeName}"></h5>
                     <p class="card-text" th:text="${popupStore.storeAt}"></p>
@@ -144,8 +147,8 @@
     <div class="row mt-3">
         <!-- Thymeleaf 반복문: list2에 있는 데이터들을 순회하며 카드 생성 -->
         <div class="col-md-4" th:each="popupStore : ${list2}">
-            <div class="card mt-2" onclick="location.href='/popupStore/detail'" style="cursor: pointer;">
-                <img th:src="${popupStore.storeThumbnail}" class="card-img-top" alt="팝업스토어 이미지">
+            <div class="card mt-2" th:onclick="|location.href='/popupStore/detail/' + ${popupStore.storeId}|" style="cursor: pointer;">
+            <img th:src="${popupStore.storeThumbnail}" class="card-img-top" alt="팝업스토어 이미지">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${popupStore.storeName}"></h5>
                     <p class="card-text" th:text="${popupStore.storeAt}"></p>

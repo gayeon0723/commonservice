@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -61,9 +62,9 @@ public class PopupStoreController {
      * @param model Model 객체 (컨트롤러에서 뷰로 데이터를 전달하기 위해 사용)
      * @return "popupStore/detail" (Thymeleaf 템플릿)
      */
-    @GetMapping("/detail")
-    public String detail(Model model) {
-        List<PopupStore> detail = popupStoreService.findInfo();
+    @GetMapping("/detail/{storeId}")
+    public String detail(Model model, @PathVariable Long storeId) {
+        List<PopupStore> detail = popupStoreService.findInfo(storeId);
         model.addAttribute("detail", detail);
         // Thymeleaf 템플릿 "popupStore/detail.html"로 이동 (해당 페이지에서 데이터를 출력)
         return "popupStore/detail"; // detail.html 뷰 반환

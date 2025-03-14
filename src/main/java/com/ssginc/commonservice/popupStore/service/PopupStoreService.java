@@ -41,8 +41,9 @@ public class PopupStoreService {
      * 팝업스토어 상세 정보 조회
      * - 임의로 팝업스토어 리스트 1개 가져옴
      */
-    public List<PopupStore> findInfo() {
-        return popupStoreRepository.findInfo();
+
+    public List<PopupStore> findInfo(Long storeId) {
+        return popupStoreRepository.findInfo(storeId);
     }
 
     /**

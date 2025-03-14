@@ -110,6 +110,13 @@ dependencies {
     // jpa (based jakarta ee)
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    //************************************************************************
+    //  spring security
+    //************************************************************************
+    // password암호화
+    // Spring Security의 Crypto 모듈
+    implementation 'org.springframework.security:spring-security-crypto:6.0.0'
+
 
     // Jackson Databind 라이브러리 추가
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
