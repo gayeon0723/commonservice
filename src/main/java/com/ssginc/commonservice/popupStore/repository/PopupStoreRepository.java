@@ -53,4 +53,22 @@ public interface PopupStoreRepository extends JpaRepository<PopupStore, Long>{
         LIMIT 1
     """)
     List<PopupStore> findInfo(@Param("storeId") Long storeId);
+
+    // 팝업스토어 검색
+    @Query("""
+       SELECT p FROM PopupStore p
+       WHERE p.storeName LIKE %:keyword%
+        ORDER BY p.nowCapacity DESC
+                LIMIT 3
+    """)
+    List<PopupStore> getListByContent(String keyword);
+
+    // 팝업스토어 검색
+    @Query("""
+       SELECT p FROM PopupStore p
+       WHERE p.storeName LIKE %:keyword%
+       ORDER BY p.storeStart DESC
+               LIMIT 3
+    """)
+    List<PopupStore> getListByContent2(String keyword);
 }

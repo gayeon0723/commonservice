@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.swing.*;
 import java.util.List;
 
 @Slf4j // 로깅을 위한 Lombok 어노테이션 (로그 출력 가능)
@@ -111,5 +112,20 @@ public class PopupStoreController {
 
         // (4) "popupStore/register2.html"로 이동하여 결과 출력
         return "popupStore/register2";
+    }
+
+    // 팝업스토어 검색
+    @GetMapping("find")
+    public String find(@RequestParam String keyword, Model model) {
+        System.out.println(keyword);
+        List<PopupStore> list = popupStoreService.getListByContent(keyword);
+        System.out.println("list.size() >>>>>>>>>>>>>>>>>>>>>>>>> " + list.size());
+        System.out.println(list);
+        List<PopupStore> list2 = popupStoreService.getListByContent2(keyword);
+        System.out.println("list2.size() >>>>>>>>>>>>>>>>>>>>>>>>> " + list2.size());
+
+        model.addAttribute("list", list);
+        model.addAttribute("list2", list2);
+        return "popupStore/list";
     }
 }

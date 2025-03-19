@@ -56,4 +56,14 @@ public class PopupStoreService {
     public PopupStore save(PopupStore popupStore) {
         return popupStoreRepository.save(popupStore); // JPA를 사용하여 저장
     }
+
+    // 팝업스토어 검색(인기팝)
+    public List<PopupStore> getListByContent(String keyword) {
+        return popupStoreRepository.getListByContent(keyword);
+    }
+
+    // 팝업스토어 검색(방금 도착)
+    public List<PopupStore> getListByContent2(String keyword) {
+        return popupStoreRepository.getListByContent2(keyword);
+    }
 }
