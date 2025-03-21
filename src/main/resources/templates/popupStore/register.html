@@ -33,13 +33,15 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
         <div>
-            <a class="navbar-brand" href="#">Navbar scroll</a>
+            <a class="navbar-brand" href="/popupStore/list">
+                <img src="/images/logo.png" width="175" height="43" class="d-inline-block align-top" alt="logo">
+            </a>
         </div>
 
         <!-- 검색창 -->
         <form class="d-flex w-100 ms-5" role="search">
             <input class="form-control ms-5 me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-success" type="submit">Search</button>
         </form>
 
         <!-- 로그인 여부에 따라 다른 UI 표시 -->
@@ -56,7 +58,7 @@
                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="/popupStore/chart">Dashboard</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><hr class="dropdown-divider"></li>
@@ -75,25 +77,25 @@
         <!-- 업체명 입력 -->
         <div class="mb-3">
             <label for="storeName" class="form-label fw-bold fs-5">업체명</label>
-            <input type="text" id="storeName" name="storeName" class="form-control" value="Vintage Market">
+            <input type="text" id="storeName" name="storeName" class="form-control" placeholder="업체명">
         </div>
 
         <!-- 업종 입력 -->
         <div class="mb-3">
             <label for="storeType" class="form-label fw-bold fs-5">업종</label>
-            <input type="text" id="storeType" name="storeType" class="form-control" value="Fashion">
+            <input type="text" id="storeType" name="storeType" class="form-control" placeholder="업종">
         </div>
 
         <!-- 장소 입력 -->
         <div class="mb-3">
             <label for="storeAt" class="form-label fw-bold fs-5">장소</label>
-            <input type="text" id="storeAt" name="storeAt" class="form-control" value="Seoul, Korea">
+            <input type="text" id="storeAt" name="storeAt" class="form-control" placeholder="장소">
         </div>
 
         <!-- 카테고리 입력 -->
         <div class="mb-3">
             <label for="storeCategory" class="form-label fw-bold fs-5">카테고리</label>
-            <input type="text" id="storeCategory" name="storeCategory" class="form-control" value="Clothing">
+            <input type="text" id="storeCategory" name="storeCategory" class="form-control" placeholder="카테고리">
         </div>
 
         <!-- 운영일시 입력 -->
@@ -105,7 +107,7 @@
         <!-- 팝업스토어 소개 입력 -->
         <div class="mb-3">
             <label for="storeDesc" class="form-label fw-bold fs-5">팝업스토어 소개</label>
-            <textarea id="storeDesc" name="storeDesc" class="form-control" rows="15">kkkk</textarea>
+            <textarea id="storeDesc" name="storeDesc" class="form-control" rows="15" placeholder="내용을 입력하세요."></textarea>
         </div>
 
         <!-- 업체 이미지 업로드 -->

@@ -54,21 +54,37 @@ public interface PopupStoreRepository extends JpaRepository<PopupStore, Long>{
     """)
     List<PopupStore> findInfo(@Param("storeId") Long storeId);
 
-    // 팝업스토어 검색
+    /**
+     * 키워드를 포함하는 팝업스토어 검색 (인기 순 정렬)
+     * - storeName이 특정 키워드를 포함하는 팝업스토어를 검색
+     * - 예약 가능 인원(nowCapacity)이 많은 순서대로 정렬
+     * - 상위 3개의 결과만 반환
+     *
+     * @param keyword 검색할 키워드 (storeName에서 찾음)
+     * @return 검색된 상위 3개의 팝업스토어 목록
+     */
     @Query("""
        SELECT p FROM PopupStore p
        WHERE p.storeName LIKE %:keyword%
-        ORDER BY p.nowCapacity DESC
-                LIMIT 3
+       ORDER BY p.nowCapacity DESC
+       LIMIT 3
     """)
     List<PopupStore> getListByContent(String keyword);
 
-    // 팝업스토어 검색
+    /**
+     * 키워드를 포함하는 팝업스토어 검색 (최신 등록 순 정렬)
+     * - storeName이 특정 키워드를 포함하는 팝업스토어를 검색
+     * - 운영 시작일(storeStart)이 최신순으로 정렬됨
+     * - 상위 3개의 결과만 반환
+     *
+     * @param keyword 검색할 키워드 (storeName에서 찾음)
+     * @return 검색된 상위 3개의 팝업스토어 목록
+     */
     @Query("""
        SELECT p FROM PopupStore p
        WHERE p.storeName LIKE %:keyword%
        ORDER BY p.storeStart DESC
-               LIMIT 3
+       LIMIT 3
     """)
     List<PopupStore> getListByContent2(String keyword);
 }

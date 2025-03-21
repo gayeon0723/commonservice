@@ -6,16 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+@Slf4j // 로깅을 위한 Lombok 어노테이션 (로그 출력 가능)
 @RestController
 @RequestMapping("/email")
-@RequiredArgsConstructor
+@RequiredArgsConstructor // 생성자를 자동으로 만들어줌 (final 필드 주입)
 public class MailController {
     private final MailService mailService;
 
     // 이메일 인증코드 발송
     @PostMapping("sendCode")
-    public String sendEmailVerificationCode(@RequestParam String userEmail) {
+    public String sendEmailVerificationCode(String userEmail) {
         // 1. 인증 코드 생성
         String authCode = mailService.createAuthCode();
         // 2. 이메일 발송
@@ -30,8 +30,8 @@ public class MailController {
 
     // 이메일 인증코드 검증
     @PostMapping("verifyCode")
-    public String verifyEmailCode(@RequestParam String userEmail,
-                                  @RequestParam String authCode) {
+    public String verifyEmailCode(String userEmail,
+                                  String authCode) {
         if (mailService.verifyAuthCode(userEmail, authCode)) {
             return "verified"; // 인증 성공
         } else {

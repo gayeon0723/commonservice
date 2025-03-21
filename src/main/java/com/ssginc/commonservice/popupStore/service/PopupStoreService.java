@@ -57,13 +57,25 @@ public class PopupStoreService {
         return popupStoreRepository.save(popupStore); // JPA를 사용하여 저장
     }
 
-    // 팝업스토어 검색(인기팝)
+    /**
+     * 팝업스토어 검색 기능 (인기 팝업스토어 검색)
+     * - 키워드를 포함하는 인기 팝업스토어 리스트를 조회함
+     *
+     * @param keyword - 검색어 (사용자가 입력한 키워드)
+     * @return List<PopupStore> - 검색 결과 리스트 반환
+     */
     public List<PopupStore> getListByContent(String keyword) {
-        return popupStoreRepository.getListByContent(keyword);
+        return popupStoreRepository.getListByContent(keyword); // 키워드를 포함한 인기 팝업스토어 조회
     }
 
-    // 팝업스토어 검색(방금 도착)
+    /**
+     * 팝업스토어 검색 기능 (방금 도착한 신규 팝업스토어 검색)
+     * - 키워드를 포함하는 최근 추가된 팝업스토어 리스트를 조회함
+     *
+     * @param keyword - 검색어 (사용자가 입력한 키워드)
+     * @return List<PopupStore> - 검색 결과 리스트 반환
+     */
     public List<PopupStore> getListByContent2(String keyword) {
-        return popupStoreRepository.getListByContent2(keyword);
+        return popupStoreRepository.getListByContent2(keyword); // 키워드를 포함한 신규 팝업스토어 조회
     }
 }

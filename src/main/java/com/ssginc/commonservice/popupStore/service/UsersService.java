@@ -52,4 +52,14 @@ public class UsersService {
         usersRepository.save(users); //save() 메서드 - 엔티티를 저장하거나 수정할 때 사용하는 메서드
         return users; // 저장된 사용자 객체 반환
     }
+
+    /**
+     * 사용자 정보 조회 메서드
+     * - 특정 사용자의 정보를 가져옴 (이메일 기반 검색)
+     * @param users 조회할 사용자 객체 (이메일 필요)
+     * @return 조회된 사용자 정보 객체
+     */
+    public Users getUserInfo(Users users) {
+        return usersRepository.login(users.getUserEmail()); // 이메일 기반 사용자 정보 조회
+    }
 }

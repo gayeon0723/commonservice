@@ -17,6 +17,9 @@ public class PopupStoreDto {
     private String storeAt; //위치
     private String storeCategory; //카테고리
     private String storeThumbnail; //팝업스토어 이미지
+    private String storeThumbnail2; //팝업스토어 이미지
+    private String storeThumbnail3; //팝업스토어 이미지
+    private String storeMap; //팝업스토어 위치 지도
     private LocalDateTime storeStart; //운영 시작일시
     private LocalDateTime storeEnd; //운영 종료일시
     private String storeDesc; //팝업스토어 상세 설명

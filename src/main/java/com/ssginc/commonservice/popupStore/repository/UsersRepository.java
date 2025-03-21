@@ -28,6 +28,8 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
 
 
+
+// 특정 이메일을 가진 사용자 조회
     // 회원가입 메서드: JpaRepository에서 제공하는 save() 메서드를 활용하여 별도 정의 필요 없음.
     // - save(entity): 사용자 정보 저장 (회원가입 또는 업데이트)
     //Users createUser(Users users); --> save() 메서드 사용

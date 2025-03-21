@@ -4,14 +4,12 @@ import com.ssginc.commonservice.popupStore.dto.ReservationDto;
 import com.ssginc.commonservice.popupStore.entity.Reservation;
 import com.ssginc.commonservice.popupStore.service.PopupStoreService;
 import com.ssginc.commonservice.popupStore.service.ReservationService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 예약 관련 컨트롤러
@@ -31,10 +29,13 @@ public class ReservationController {
      * @return 예약 화면 (popupStore/member.html)
      */
     @GetMapping("/member/{storeId}")
-    public String member(Model model, @PathVariable("storeId") int storeId) {
+    public String member(Model model, @PathVariable("storeId") int storeId, HttpSession session) {
+        // 세션을 활용하여 로그인한 사용자 정보를 가져옴 (디버깅용 출력)
         System.out.println("나를 호출--------------1");
         System.out.println("====================");
-        System.out.println(storeId);
+        System.out.println(session.getAttribute("user1")); // 세션에 저장된 사용자 정보
+        System.out.println(session.getAttribute("userName")); // 세션에 저장된 사용자 이름
+        System.out.println(storeId); // URL에서 받아온 storeId 확인
         System.out.println("====================");
         // 모델에 storeId 추가하여 뷰에서 사용할 수 있도록 함
         model.addAttribute("storeId", storeId);

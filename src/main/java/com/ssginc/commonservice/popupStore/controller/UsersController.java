@@ -42,11 +42,17 @@ public class UsersController {
         System.out.println(users);
         System.out.println("=====================");
 
-        boolean result = usersService.login(users);
+        boolean result = usersService.login(users); // 사용자 로그인 검증
 
         if (result) {
             // 로그인 성공 시 세션에 사용자 이메일 저장
             session.setAttribute("userEmail", users.getUserEmail());
+
+            Users users1 = usersService.getUserInfo(users);
+            System.out.println("===> 개인정보 : " + users1);
+            // 세션에 사용자 정보 저장
+            session.setAttribute("user1", users1);
+            session.setAttribute("userName", users.getUserName());
         } else {
             // 로그인 실패 시 에러 메시지를 모델에 추가하여 로그인 페이지로 다시 이동
             model.addAttribute("userEmail", "이메일 주소와 비밀번호를 확인해주세요.");

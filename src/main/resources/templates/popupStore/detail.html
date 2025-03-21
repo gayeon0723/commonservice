@@ -44,13 +44,15 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container">
     <div>
-      <a class="navbar-brand" href="#">Navbar scroll</a>
+      <a class="navbar-brand" href="/popupStore/list">
+        <img src="/images/logo.png" width="175" height="43" class="d-inline-block align-top" alt="logo">
+      </a>
     </div>
 
     <!-- 검색창 -->
     <form class="d-flex w-100 ms-5" role="search">
       <input class="form-control ms-5 me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
+      <button class="btn btn-success" type="submit">Search</button>
     </form>
 
     <!-- 로그인 여부에 따라 다른 UI 표시 -->
@@ -67,7 +69,7 @@
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="/popupStore/chart">Dashboard</a></li>
           <li><a class="dropdown-item" href="#">Settings</a></li>
           <li><a class="dropdown-item" href="#">Profile</a></li>
           <li><hr class="dropdown-divider"></li>
@@ -83,7 +85,7 @@
 <!-- 팝업스토어 상세 정보 -->
 <div class="container mt-4" th:each="popupStore : ${detail}">
   <!-- 팝업스토어 제목 -->
-  <h2 class="popup-title mt-5" th:text="${popupStore.storeName}"></h2>
+  <h2 class="popup-title mt-5 fw-bold" th:text="${popupStore.storeName}"></h2>
   <!-- 팝업스토어 장소 -->
   <p th:text="${popupStore.storeAt}"></p>
 
@@ -100,13 +102,13 @@
   <div class="container mt-4">
     <div class="row">
       <div class="col-md-4">
-        <img src="/images/impi.png" class="img-fluid" alt="이미지2">
-      </div>
-      <div class="col-md-4">
         <img th:src="${popupStore.storeThumbnail}" class="img-fluid" alt="이미지1">
       </div>
       <div class="col-md-4">
-        <img src="/images/impi2.png" class="img-fluid" alt="이미지3">
+        <img th:src="${popupStore.storeThumbnail2}" class="img-fluid" alt="이미지2">
+      </div>
+      <div class="col-md-4">
+        <img th:src="${popupStore.storeThumbnail3}" class="img-fluid" alt="이미지3">
       </div>
     </div>
   </div>
@@ -131,9 +133,11 @@
   </div>
 
 
-  <!-- 지도 (Google Maps Embed API 활용) -->
+  <!-- 지도 -->
   <div class="map-container mt-4">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3163.518814079354!2d127.05101907629587!3d37.5428387254859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca56c38fb7799%3A0x5c547e93c9b8f557!2z7ZWY66as67O07Yyd7JeF!5e0!3m2!1sko!2skr!4v1740656222061!5m2!1sko!2skr" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<!--    <iframe th:src="${popupStore.storeMap}"-->
+<!--            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>-->
   </div>
 
   <!-- 팝업스토어 예약 버튼 -->

@@ -7,12 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
 import java.util.List;
 
 @Slf4j // 로깅을 위한 Lombok 어노테이션 (로그 출력 가능)
@@ -114,18 +110,32 @@ public class PopupStoreController {
         return "popupStore/register2";
     }
 
-    // 팝업스토어 검색
+    /**
+     * 팝업스토어 검색 기능
+     * URL: GET /popupStore/find
+     *
+     * @param keyword 검색어 (팝업스토어 내용 검색)
+     * @param model 검색 결과를 전달할 Model 객체
+     * @return "popupStore/list" (검색 결과 페이지)
+     */
     @GetMapping("find")
-    public String find(@RequestParam String keyword, Model model) {
-        System.out.println(keyword);
+    public String find(String keyword, Model model) {
+        System.out.println(keyword); // 검색어 출력 (디버깅)
+
+        // (1) 첫 번째 검색 방식으로 조회
         List<PopupStore> list = popupStoreService.getListByContent(keyword);
         System.out.println("list.size() >>>>>>>>>>>>>>>>>>>>>>>>> " + list.size());
         System.out.println(list);
+
+        // (2) 두 번째 검색 방식으로 조회
         List<PopupStore> list2 = popupStoreService.getListByContent2(keyword);
         System.out.println("list2.size() >>>>>>>>>>>>>>>>>>>>>>>>> " + list2.size());
 
+        // 모델에 검색 결과 추가
         model.addAttribute("list", list);
         model.addAttribute("list2", list2);
+
+        // "popupStore/list.html" 뷰 반환 (검색 결과 화면)
         return "popupStore/list";
     }
 }

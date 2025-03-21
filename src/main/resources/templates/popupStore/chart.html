@@ -1,10 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        /* 차트를 가로로 배치하기 위한 컨테이너 스타일 */
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        .chart-box {
+            flex: 1;
+            margin: 10px;
+            min-width: 500px;
+        }
+    </style>
+    <!--팝업스토어 예약 현황 차트-->
+    <script type="text/javascript">
+        google.charts.load("current", {packages:['corechart']});
+        google.charts.setOnLoadCallback(fetchChartData);
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        //1. json으로 컨트롤러에서 json데이터 가지고 오기
+        function fetchChartData() {
+            fetch("/reservation/chart2")
+                .then(response => response.json()) // JSON 형식으로 변환
+                .then(chartList => {
+                    console.log("Fetched chart data:", chartList);
+                    //2. 가지고 온 데이터로 차트그리기(데이터를 전달해야함.)
+                    drawChart(chartList); // 데이터 로드 후 차트 그리기
+                })
+                .catch(error => console.error("Error fetching chart data:", error));
+        }
+
+        function drawChart(chartList) {
+
+            var data2 = [
+                ["Store", "Reservations", { role: "style" }]
+            ]
+
+            chartList.forEach(function(item) {
+                data2.push([item.storeId, item.reservationCount, getRandomColor()]);
+            });
+
+            var data = google.visualization.arrayToDataTable(data2);
+
+            console.log("Final chart data:", data);
+
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0, 1,
+                { calc: "stringify",
+                    sourceColumn: 1,
+                    type: "string",
+                    role: "annotation" },
+                2]);
+
+            var options = {
+                title: "팝업스토어 예약 현황",
+                width: 900,
+                height: 600,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+                hAxis: {
+                    title: "팝업스토어", // X축 라벨
+                },
+                vAxis: {
+                    title: "팝업스토어 예약 횟수", // Y축 라벨
+                }
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+            chart.draw(view, options);
+        }
+    </script>
+    <!-- 가장 많이 등록된 팝업스토어 카테고리 -->
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart2);
+        function drawChart2() {
+            var data3 = google.visualization.arrayToDataTable([
+                ['카테고리', '카테고리가 등록된 횟수'],
+                ['굿즈',     4],
+                ['갤러리',      3],
+                ['뷰티',  3],
+                ['식음료', 2],
+                ['생활용품',    2],
+                ['캐릭터',    2],
+                ['패션',    1],
+                ['인테리어',    1],
+                ['사진전',    1]
+            ]);
+
+            var options3 = {
+                title: '가장 많이 등록된 팝업스토어 카테고리',
+                width: 900,
+                height: 600,
+                pieHole: 0.4,
+            };
+
+            var chart3 = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart3.draw(data3, options3);
+        }
+    </script>
 </head>
 <body>
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+        <div>
+            <a class="navbar-brand" href="/popupStore/list">
+                <img src="/images/logo.png" width="175" height="43" class="d-inline-block align-top" alt="logo">
+            </a>
+        </div>
 
+        <!-- 검색창 -->
+        <form action="/popupStore/find" method="get" class="d-flex w-100 ms-5" role="search">
+            <input class="form-control ms-5 me-2" type="search" name="keyword" placeholder="Search" aria-label="Search">
+            <button class="btn btn-success" type="submit">Search</button>
+        </form>
+
+        <!-- 로그인 여부에 따라 다른 UI 표시 -->
+        <div class="col-md-3 text-end">
+            <!-- 로그인 전: 로그인 & 회원가입 버튼 -->
+            <div th:if="${session.userEmail == null}">
+                <a href="/popupStore/login" class="btn btn-outline-primary me-2">Login</a>
+                <a href="/popupStore/create" class="btn btn-primary me-2">Sign-up</a>
+            </div>
+
+            <!-- 로그인 후: 유저 프로필 드롭다운 -->
+            <div th:if="${session.userEmail != null}" class="flex-shrink-0 dropdown">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="/popupStore/chart">Dashboard</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/popupStore/logout">Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="b-example-divider"></div>
+<!-- 차트를 가로로 정렬하는 컨테이너 -->
+<div class="chart-container mt-5">
+    <div class="chart-box" id="columnchart_values"></div>
+    <div class="chart-box" id="donutchart"></div>
+</div>
+
+<!-- 홈화면(팝업스토어 목록 화면)으로 돌아가기 -->
+<div class="container text-center mt-5">
+    <a href="/popupStore/list" class="btn btn-dark">홈화면으로 돌아가기</a>
+</div>
 </body>
 </html>

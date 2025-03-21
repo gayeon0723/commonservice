@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder // Lombok: 빌더 패턴 자동 생성
 @Entity // JPA 엔티티 선언 (해당 클래스가 DB 테이블과 매핑됨)
 @Table(name = "popupstore") // 해당 엔티티가 "popupstore" 테이블과 매핑됨을 명시
-@Data
+@Data // @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor 모두 자동 생성
 public class PopupStore {
 
     @Id // 기본 키(PK) 설정
@@ -35,17 +35,26 @@ public class PopupStore {
     @Column(nullable = false, length = 100) // null 불가, 최대 길이 100자
     private String storeCategory; //카테고리
 
-    @Column(nullable = true)
+    @Column(nullable = false) // null 불가
     private LocalDateTime storeStart; //운영 시작일시
 
-    @Column(nullable = true)
+    @Column(nullable = false) // null 불가
     private LocalDateTime storeEnd; //운영 종료일시
 
     @Column(nullable = false, length = 1000) // null 불가, 최대 길이 1000자
     private String storeDesc; //팝업스토어 상세 설명
 
-    @Column(nullable = true, length = 500) // 최대 길이 500자
+    @Column(nullable = false, length = 500) // null 불가, 최대 길이 500자
     private String storeThumbnail; //팝업스토어 이미지(썸네일 이미지, 파일 경로 또는 URL)
+
+    @Column(nullable = false, length = 500) // null 불가, 최대 길이 500자
+    private String storeThumbnail2; //팝업스토어 이미지(썸네일 이미지, 파일 경로 또는 URL)
+
+    @Column(nullable = false, length = 500) // null 불가, 최대 길이 500자
+    private String storeThumbnail3; //팝업스토어 이미지(썸네일 이미지, 파일 경로 또는 URL)
+
+    @Column(nullable = false) // null 불가
+    private String storeMap; //팝업스토어 위치 지도
 
     private int maxCapacity; //에약 가능 인원
     private int nowCapacity; //현재 예약 가능 인원

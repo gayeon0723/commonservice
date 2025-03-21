@@ -27,19 +27,45 @@
             transform: translateX(100%); /* 줄어든 만큼 다시 오른쪽으로 이동 */
         }
     </style>
+    <script>
+        /**
+         * 예약 인원 수 감소 함수
+         * - "예약 인원" 입력 필드 값을 1 감소시킴.
+         * - 최소값 0 이하로 내려가지 않도록 제한.
+         */
+        function decreaseCount() {
+            let countInput = document.getElementById("reservationCount"); // 입력 필드 요소 가져오기
+            let count = parseInt(countInput.value, 10); // 현재 값 가져와 정수로 변환
+            if (count > 0) {  // 0 밑으로 떨어지지 않도록 제한
+                countInput.value = count - 1; // 값 감소
+            }
+        }
+
+        /**
+         * 예약 인원 수 증가 함수
+         * - "예약 인원" 입력 필드 값을 1 증가시킴.
+         */
+        function increaseCount() {
+            let countInput = document.getElementById("reservationCount"); // 입력 필드 요소 가져오기
+            let count = parseInt(countInput.value, 10); // 현재 값 가져와 정수로 변환
+            countInput.value = count + 1; // 값 증가
+        }
+    </script>
 </head>
 <body>
 <!-- 네비게이션 바 -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
         <div>
-            <a class="navbar-brand" href="#">Navbar scroll</a>
+            <a class="navbar-brand" href="/popupStore/list">
+                <img src="/images/logo.png" width="175" height="43" class="d-inline-block align-top" alt="logo">
+            </a>
         </div>
 
         <!-- 검색창 -->
         <form class="d-flex w-100 ms-5" role="search">
             <input class="form-control ms-5 me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-success" type="submit">Search</button>
         </form>
 
         <!-- 로그인 여부에 따라 다른 UI 표시 -->
@@ -56,7 +82,7 @@
                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="/popupStore/chart">Dashboard</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     <li><hr class="dropdown-divider"></li>
@@ -78,42 +104,50 @@
 
         <!-- 사용자 ID -->
         <input type="hidden" name="userId" value="7"></input>
-        <div class="container mt-5">
-            <div class="card p-4">
+        <div class="container mt-5 text-center">
+            <div class="card p-5 text-center" style="background-color: #eafaee">
                 <h3 class="fw-bold mb-3">예약자 정보</h3>
                 <p>1. 예약이 완료되면 예약 상세 페이지에서 정보를 확인할 수 있습니다.</p>
                 <p>2. 예약 후 변경 및 취소는 호스트의 정책에 따라 다를 수 있습니다.</p>
                 <!-- 사용자 이름 입력 -->
-                <div class="mb-3">
+                <div class="mb-3 w-50 mx-auto text-center">
                     <label for="userName" class="form-label fw-bold fs-5">예약자</label>
-                    <input type="text" id="userName" name="userName" class="form-control" value="Alice Kim">
+                    <input type="text" id="userName" name="userName" class="form-control" th:value="${session.user1.userName}">
                 </div>
                 <!-- 사용자 연락처 입력 -->
-                <div class="mb-3">
+                <div class="mb-3 w-50 mx-auto text-center">
                     <label for="userPhone" class="form-label fw-bold fs-5">연락처</label>
-                    <input type="text" id="userPhone" name="userPhone" class="form-control" value="010-1111-2222">
+                    <input type="text" id="userPhone" name="userPhone" class="form-control" th:value="${session.user1.userPhone}">
                 </div>
                 <!-- 사용자 이메일 입력 -->
-                <div>
+                <div class="w-50 mx-auto text-center">
                     <label for="userEmail" class="form-label fw-bold fs-5">이메일</label>
-                    <input type="text" id="userEmail" name="userEmail" class="form-control" value="user1@example.com">
+                    <input type="text" id="userEmail" name="userEmail" class="form-control" th:value="${session.user1.userEmail}">
                 </div>
             </div>
         </div>
 
         <!-- 예약하기 -->
         <div class="container mt-5 text-center">
-            <h3 class="fw-bold mb-3">예약하기</h3>
-            <!-- 에약 일시 -->
-            <input type="datetime-local" id="reservationDatetime" name="reservationDatetime" class="form-control w-25 mx-auto mt-2">
+            <h3 class="fw-bold mb-4">예약하기</h3>
+            <!-- 예약 일시 -->
+            <div class="mb-4">
+                <label for="reservationDatetime" class="form-label fw-bold">예약 날짜 및 시간</label>
+                <input type="datetime-local" id="reservationDatetime" name="reservationDatetime" class="form-control w-50 mx-auto">
+            </div>
+
             <!-- 예약 인원 선택 -->
-            <select class="form-select w-25 mx-auto mt-2">
-                <option value="1" selected>1명</option>
-                <option value="2">2명</option>
-                <option value="3">3명</option>
-            </select>
+            <div class="mb-3">
+                <label for="reservationCount" class="form-label fw-bold">예약 인원</label>
+                <div class="input-group w-50 mx-auto">
+                    <button class="btn btn-outline-dark" type="button" onclick="decreaseCount()">-</button>
+                    <input type="text" id="reservationCount" name="reservationCount" class="form-control text-center" value="1" readonly>
+                    <button class="btn btn-outline-dark" type="button" onclick="increaseCount()">+</button>
+                </div>
+            </div>
+
             <!-- 예약하기 버튼 -->
-            <button class="btn btn-dark mt-4">예약하기</button>
+            <button class="btn btn-dark mt-4 w-50">예약하기</button>
         </div>
     </form>
 </div>

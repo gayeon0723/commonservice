@@ -4,6 +4,7 @@ import com.ssginc.commonservice.popupStore.entity.Reservation;
 import com.ssginc.commonservice.popupStore.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 예약 관련 비즈니스 로직을 처리하는 서비스 클래스
@@ -16,9 +17,17 @@ public class ReservationService {
 
     /**
      * 예약 정보를 저장하는 메서드
-     * @param reservation 저장할 예약 객체
-     * @return 저장된 예약 객체
+     * - 특정 조건에 맞는 예약 정보를 데이터베이스에서 가져옴.
+     * - 트랜잭션이 필요하므로 @Transactional 어노테이션을 사용.
+     *
+     * @return 조회된 예약 정보 (Reservation 객체)
      */
+
+    @Transactional // 데이터 변경이 일어나므로 트랜잭션 적용 (자동 롤백/커밋 관리)
+    public Reservation findReservation() {
+        return reservationRepository.findReservationBy();
+    }
+
     public Reservation save(Reservation reservation) {
         return reservationRepository.save(reservation);
     }
